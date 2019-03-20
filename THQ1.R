@@ -1,7 +1,7 @@
 #### Question 1 ####
 P <- function(C, FV, n, y){
   t <- seq(0.5, n, 0.5)
-  P <- sum(C*exp(-y*t))+FV*exp(-y[2*n]*t[2*n])
+  P <- sum(C*exp(-y*t))+FV*exp(-y[2*n]*n)
   return(P)
 }
 y <- rep(0.1, 2)
