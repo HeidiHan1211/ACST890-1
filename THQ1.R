@@ -1,11 +1,11 @@
-# Question 1
+#### Question 1 ####
 P <- function(C, FV, n, y){
   t <- seq(0.5, n, 0.5)
-  P <- sum(C*exp(-y*t))+FV*exp(-y[2*n]*t[n])
+  P <- sum(C*exp(-y*t))+FV*exp(-y[2*n]*t[2*n])
   return(P)
 }
-y <- c(0.1,0.2)
-P(10,10,1,y)
+y <- rep(0.1, 2)
+P(10,100,1,y)
 
   
 
@@ -24,7 +24,7 @@ dataset$period <- factor(dataset$period)
 m <- aggregate(dataset$gdp, by=list(dataset$period), FUN = mean)
 s <- aggregate(dataset$gdp, by=list(dataset$period), FUN = sd)
 stat.table <- cbind(m, s[,2])
-colnames(stat.table) <- c('Period','Mean','St dev')
+colnames(stat.table) <- c('Period','Mean','Standard deviation')
 stat.table
 # Part e
 pairs(dataset[,3:dim(dataset)[2]])
@@ -35,16 +35,18 @@ summary(mdl1)
 mdl2 <- lm(gdp~exp+epg+hpr+oil+gdpus+crd, data = dataset)
 summary(mdl2)
 # Part h
-q <- quantile(dataset$gdp,probs = 0.05)
+# 5% gdp
+q <- quantile(dataset$gdp,probs = 0.05);q
+# Create vector 'state' and add it to 'dataset'
 state <- factor(ifelse(dataset$gdp < q, "crisis", "normal"))
 dataset <- data.frame(cbind(dataset, state))
+# Split train and test set and run logistic regression
 train <- dataset[dataset$time<2008,]
 test <- dataset[dataset$time>=2008,]
 mdl3 <- glm(state~bci, data = train, family = binomial)
 summary(mdl3)
+# Compute confusion matrix
 prob <- predict(mdl3, newdata = test, type = 'response')
 contrasts(state)
 pred <- ifelse(prob<0.05, "crisis","normal")
-conf.mat <- table(pred, test$state)
-mean(pred==test$state)
-conf.mat
+conf.mat <- table(pred, test$state);conf.mat
