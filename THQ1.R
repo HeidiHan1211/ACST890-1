@@ -4,13 +4,10 @@ P <- function(C, FV, n, y){
   P <- sum(C*exp(-y*t))+FV*exp(-y[2*n]*n)
   return(P)
 }
-y <- rep(0.1, 2)
-P(10,100,1,y)
-
-  
-
 #### Question 3 ####
 # Part a
+# Set the working directory according to desired file
+setwd("/Volumes/HUGO - My Passport Pro/University/ACTURIAL STUDIES/ACST890/THQ1")
 dataset <- read.csv(file = "singapore.economy.csv", header = T)
 # Part b
 dataset <- na.omit(dataset)
@@ -48,5 +45,6 @@ summary(mdl3)
 # Compute confusion matrix
 prob <- predict(mdl3, newdata = test, type = 'response')
 contrasts(state)
-pred <- ifelse(prob<0.05, "crisis","normal")
-conf.mat <- table(pred, test$state);conf.mat
+predict <- ifelse(prob<0.05, "crisis","normal")
+actual <- test$state
+conf.mat <- table(predict, actual);conf.mat
